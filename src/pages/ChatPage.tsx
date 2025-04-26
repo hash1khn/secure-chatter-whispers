@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import ChatSidebar, { Conversation } from "@/components/chat/ChatSidebar";
 import ChatWindow from "@/components/chat/ChatWindow";
 import NewConversationDialog from "@/components/chat/NewConversationDialog";
-import { useToast } from "@/components/ui/sonner";
+import { useToast } from "@/hooks/use-toast";
+import { toast as sonnerToast } from "@/components/ui/sonner";
 
 interface ChatPageProps {
   currentUser: { username: string; id: string };

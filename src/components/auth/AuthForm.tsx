@@ -1,11 +1,11 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Shield } from "lucide-react";
-import { useToast } from "@/components/ui/sonner";
+import { useToast } from "@/hooks/use-toast";
+import { toast as sonnerToast } from "@/components/ui/sonner";
 
 type AuthMode = "login" | "register";
 
@@ -26,7 +26,11 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthenticated }) => {
     setIsLoading(true);
 
     if (mode === "register" && password !== confirmPassword) {
-      toast("Passwords do not match");
+      toast({
+        title: "Error",
+        description: "Passwords do not match",
+        variant: "destructive"
+      });
       setIsLoading(false);
       return;
     }
@@ -43,12 +47,16 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthenticated }) => {
         localStorage.setItem("secureChat_user", JSON.stringify(userData));
         onAuthenticated(userData);
         
-        toast("Authentication successful!");
+        sonnerToast("Authentication successful!");
         setIsLoading(false);
       }, 1000);
     } catch (error) {
       console.error("Authentication error:", error);
-      toast("Authentication failed. Please try again.");
+      toast({
+        title: "Authentication Failed",
+        description: "Please try again.",
+        variant: "destructive"
+      });
       setIsLoading(false);
     }
   };

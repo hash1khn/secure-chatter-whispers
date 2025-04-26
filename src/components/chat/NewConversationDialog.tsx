@@ -4,7 +4,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogT
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { User, UserPlus } from "lucide-react";
-import { useToast } from "@/components/ui/sonner";
+import { useToast } from "@/hooks/use-toast";
+import { toast as sonnerToast } from "@/components/ui/sonner";
 
 interface NewConversationDialogProps {
   onAddConversation: (name: string) => void;
@@ -17,14 +18,18 @@ const NewConversationDialog: React.FC<NewConversationDialogProps> = ({ onAddConv
 
   const handleAddConversation = () => {
     if (!username.trim()) {
-      toast("Please enter a username");
+      toast({
+        title: "Error",
+        description: "Please enter a username",
+        variant: "destructive"
+      });
       return;
     }
     
     onAddConversation(username);
     setUsername("");
     setOpen(false);
-    toast(`Chat with ${username} created`);
+    sonnerToast(`Chat with ${username} created`);
   };
 
   return (
