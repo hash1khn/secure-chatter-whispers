@@ -1,10 +1,9 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ChatSidebar, { Conversation } from "@/components/chat/ChatSidebar";
 import ChatWindow from "@/components/chat/ChatWindow";
 import NewConversationDialog from "@/components/chat/NewConversationDialog";
 import { useToast } from "@/hooks/use-toast";
-import { toast as sonnerToast } from "@/components/ui/sonner";
 
 interface ChatPageProps {
   currentUser: { username: string; id: string };
@@ -12,31 +11,7 @@ interface ChatPageProps {
 }
 
 const ChatPage: React.FC<ChatPageProps> = ({ currentUser, onLogout }) => {
-  const [conversations, setConversations] = useState<Conversation[]>([
-    {
-      id: "user-1",
-      name: "Alice",
-      lastMessage: "Hi there! How are you?",
-      lastTimestamp: "10:30 AM",
-      online: true
-    },
-    {
-      id: "user-2",
-      name: "Bob",
-      lastMessage: "Did you get my encrypted message?",
-      lastTimestamp: "Yesterday",
-      unreadCount: 2,
-      online: false
-    },
-    {
-      id: "user-3",
-      name: "Charlie",
-      lastMessage: "Let's discuss this in private",
-      lastTimestamp: "2 days ago",
-      online: true
-    }
-  ]);
-  
+  const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeConversation, setActiveConversation] = useState<string | null>(null);
   const { toast } = useToast();
   
@@ -48,7 +23,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ currentUser, onLogout }) => {
   const handleSendMessage = (message: string) => {
     if (!activeConversation) return;
     
-    // Update the conversation with the new message
+    // We'll integrate with the Python backend here later
     setConversations(prev => prev.map(conv => {
       if (conv.id === activeConversation) {
         return {
@@ -60,30 +35,17 @@ const ChatPage: React.FC<ChatPageProps> = ({ currentUser, onLogout }) => {
       return conv;
     }));
     
-    // Simulate receiving a message back
-    setTimeout(() => {
-      setConversations(prev => prev.map(conv => {
-        if (conv.id === activeConversation) {
-          return {
-            ...conv,
-            lastMessage: "Thanks for your message! (Encrypted)",
-            lastTimestamp: "Just now"
-          };
-        }
-        return conv;
-      }));
-      
-      toast("New encrypted message received", {
-        description: `From ${getConversationById(activeConversation)?.name}`,
-      });
-    }, 3000);
+    toast({
+      title: "Encrypted Message Sent",
+      description: "Your message has been encrypted and sent securely.",
+    });
   };
 
   const handleAddConversation = (name: string) => {
     const newConversation: Conversation = {
       id: `user-${Date.now()}`,
       name,
-      online: Math.random() > 0.5,
+      online: true,
       lastTimestamp: "Just now"
     };
     

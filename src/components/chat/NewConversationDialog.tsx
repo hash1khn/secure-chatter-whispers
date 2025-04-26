@@ -3,9 +3,8 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { User, UserPlus } from "lucide-react";
+import { UserPlus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { toast as sonnerToast } from "@/components/ui/sonner";
 
 interface NewConversationDialogProps {
   onAddConversation: (name: string) => void;
@@ -29,20 +28,23 @@ const NewConversationDialog: React.FC<NewConversationDialogProps> = ({ onAddConv
     onAddConversation(username);
     setUsername("");
     setOpen(false);
-    sonnerToast(`Chat with ${username} created`);
+    toast({
+      title: "Chat Created",
+      description: `Secure chat with ${username} has been created.`
+    });
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="flex gap-2 items-center">
+        <Button variant="outline" className="flex gap-2 items-center w-full">
           <UserPlus className="h-4 w-4" />
-          <span>New Chat</span>
+          <span>New Secure Chat</span>
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Start New Conversation</DialogTitle>
+          <DialogTitle>Start New Encrypted Chat</DialogTitle>
         </DialogHeader>
         <div className="space-y-4 py-4">
           <div className="space-y-2">
@@ -60,7 +62,7 @@ const NewConversationDialog: React.FC<NewConversationDialogProps> = ({ onAddConv
             Cancel
           </Button>
           <Button onClick={handleAddConversation}>
-            Start Chat
+            Start Secure Chat
           </Button>
         </DialogFooter>
       </DialogContent>
